@@ -26,7 +26,7 @@ def create_db():
     except:
         pass
 
-
+#TESTTTTT
 
 def add_column(name):
     conn = sqlite3.connect("BIM.db")
