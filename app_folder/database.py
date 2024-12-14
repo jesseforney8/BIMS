@@ -1,41 +1,40 @@
-import sqlite3
+import psycopg2
 
 def create_db():
 ## create db
 
-    try:
-
+    
+        try:
         ### create or connect to db
 
-        conn = sqlite3.connect("BIM.db")
+                conn = psycopg2.connect(
+                database='BIMS',
+                user='postgres',
+                password='postgres',
+                host='localhost',
+                port= '5432')
 
-        ### create curser
-        c = conn.cursor()
+                conn.autocommit = True
 
-        ## create table
+                cursor = conn.cursor()
 
-        c.execute("""CREATE TABLE BIM (
-                code text,
-                device_type text,
-                serial text,
-                location text,
-                label_printed boolean
-                )""")
-        conn.commit()
+                
 
-    except:
-        pass
+                cursor.execute("""CREATE TABLE IT_Devices (
+                        code text PRIMARY KEY,
+                        device_type text,
+                        serial text UNIQUE,
+                        location text,
+                        label_printed boolean
+                        );""")
 
-#TESTTTTT
-#test2
+        except:
+                pass
 
-def add_column(name):
-    conn = sqlite3.connect("BIM.db")
-    c = conn.cursor()
-    c.execute(f"""
-              
-            ALTER TABLE BIM
-            ADD {name} text;
-              
-              """)
-    conn.commit()
+        
+
+        
+
+    
+
+create_db()

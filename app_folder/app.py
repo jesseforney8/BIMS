@@ -1,5 +1,5 @@
 import tkinter as tk
-import sqlite3
+import psycopg2
 from tkinter import ttk, messagebox
 from database import create_db
 
@@ -7,29 +7,6 @@ from database import create_db
 create_db()
 
 #functions
-def search_db_all():
-    conn = sqlite3.connect("BIM.db")
-    c = conn.cursor()
-    devices = c.execute("SELECT *, oid FROM BIM")
-    return devices
-
-def search_db_barcode():
-    code1 = searchentry.get()
-    conn = sqlite3.connect("BIM.db")
-    c = conn.cursor()
-    devices = c.execute(f"SELECT *, oid FROM BIM WHERE code = '{code1}'")
-    return devices
-
-def butten_search():
-    my_tree.delete(*my_tree.get_children())
-    for d in search_db_barcode():
-        my_tree.insert(parent="", index="end", iid=d[5], text="", values=(d[0], d[1], d[2], d[3], d[4]))
-    searchentry.delete(0, tk.END)
-
-def refresh_view():
-    my_tree.delete(*my_tree.get_children())
-    for d in search_db_all():
-        my_tree.insert(parent="", index="end", iid=d[5], text="", values=(d[0], d[1], d[2], d[3], d[4]))
 
 
 
@@ -63,16 +40,15 @@ my_tree.heading("location", text="location", anchor="w")
 my_tree.heading("label_printed", text="label_printed", anchor="w")
 
 
-refresh_view()
 
 
 
 
 
-searchbtn = tk.Button(frame, text="Search", command=butten_search)
+searchbtn = tk.Button(frame, text="Search")
 searchlabel = tk.Label(frame, text="Search by Barcode")
 searchentry = tk.Entry(frame)
-refreshbtn = tk.Button(frame, text="Refresh", command=refresh_view)
+refreshbtn = tk.Button(frame, text="Refresh")
 
 
 my_tree.pack()
