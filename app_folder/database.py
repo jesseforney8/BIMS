@@ -37,4 +37,13 @@ def create_db():
 
     
 
-create_db()
+def db_command(sql_command):
+        conn = psycopg2.connect(
+                database='BIMS',
+                user='postgres',
+                password='postgres',
+                host='localhost',
+                port= '5432')
+        conn.autocommit = True
+        cursor = conn.cursor()
+        cursor.execute(sql_command)
